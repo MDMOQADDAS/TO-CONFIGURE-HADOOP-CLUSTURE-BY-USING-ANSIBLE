@@ -1,0 +1,29 @@
+- hosts: localhost
+  tasks:
+  - name: "Downloading the JDK software"
+    copy:
+            src: "jdk-8u171-linux-x64.rpm"
+            dest: "root/"
+  - name: "Downloading the Hadoop Software"
+    copy:
+            src: "hadoop-1.2.1-1.x86_64.rpm"
+            dest: "root/"
+  - name: "Installing the JDK Software"
+    command: "rpm -ivh jdk-8u171-linux-x64.rpm"
+    ignore_errors: yes
+  - name: "Installing the hadoop"
+    command: "rpm -ivh hadoop-1.2.1-1.x86_64.rpm --force"
+    ignore_errors: yes
+  - name: "Creating the file"
+    file:
+            name: "/nn"
+            state: directory
+    ignore_errors: yes
+  - name: "Configuring the hdfs file of master node"
+    template:
+            src: "hdfs-site.xml.j2"
+            dest: "/etc/hadoop/hdfs-site.xml"
+  - name: "Configuring the core file of slave node"
+    template:
+            src: "core-site.xml.j2"
+            dest: "/etc/hadoop/core-site.xml"
